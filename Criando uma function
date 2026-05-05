@@ -1,0 +1,23 @@
+CREATE OR REPLACE FUNCTION check_user_status(p_id INT)
+RETURNS TEXT AS $$
+DECLARE
+    v_active BOOLEAN;
+BEGIN
+    SELECT active
+    INTO v_active
+    FROM users
+    WHERE id = p_id;
+
+    IF NOT FOUND THEN
+        RETURN 'Usuário não encontrado';
+    ELSIF v_active = TRUE THEN
+        RETURN 'Usuário ativo';
+    ELSE
+        RETURN 'Usuário inativo';
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+Exemplo de uso:
+
+SELECT check_user_status(1);
